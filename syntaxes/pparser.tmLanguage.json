@@ -1,0 +1,124 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "pparser",
+    "patterns": [
+        { "include": "#comment" },
+        { "include": "#directives" },
+        { "include": "#rule" },
+        {
+            "name": "keyword",
+            "match": "/"
+        },
+        {
+            "name": "action",
+            "begin": "({|~{)",
+            "end": "}",
+            "patterns": [
+                {
+                    "name": "variable.name",
+                    "match": "(\\${2}|\\$([1-9][0-9]*))"
+                },
+                { "include": "source.cpp" }
+            ]
+        },
+        { "include": "#expression" },
+        { "include": "#comment" }
+    ],
+    "repository": {
+        "comment": {
+            "name": "comment",
+            "patterns": [{
+                "name": "comment.line.pparser",
+                "match": "#.*$"
+            }]
+        },
+        "directives": {
+            "patterns": [
+                {
+                    "match": "(%name|%root)\\s+([^\\d\\W]\\w*)",
+                    "captures": {
+                        "1": { "name": "keyword.control.pparser" },
+                        "2": { "name": "variable" }
+                    }
+                },
+                {
+                    "begin": "(%type)(\\s+\")",
+                    "end": "\"",
+                    "beginCaptures": {
+                        "1": { "name": "keyword.control.pparser" },
+                        "2": { "name": "keyword.other" }
+                    },
+                    "endCaptures": {
+                        "0": { "name": "keyword.other" }
+                    },
+                    "patterns": [
+                        { "include": "source.cpp" }
+                    ]
+                },
+                {
+                    "begin": "(%(hpp|cpp))(\\s+{)",
+                    "end": "}",
+                    "beginCaptures": {
+                        "1": { "name": "keyword.control.pparser" }
+                    },
+                    "patterns": [
+                        { "include": "source.cpp" }
+                    ]
+                }
+            ]
+        },
+        "rule": {
+            "begin": "([^\\d\\W]\\w*)\\s*(<|(?==|-))",
+            "end": ">|=",
+            "beginCaptures": {
+                "1": { "name": "entity.name.class" }
+            },
+            "patterns": [
+                {
+                    "name": "keyword.other",
+                    "match": "-(inline|nomemo)"
+                },
+                { "include": "source.cpp" }
+            ]
+        },
+        "expression": {
+            "patterns": [
+                { "include": "#strings" },
+                {
+                    "match": "\\[([^\\]\\\\]*(\\\\.[^\\]\\\\]*)*)\\]",
+                    "captures": {
+                        "1": { "name": "string" }
+                    }
+                },
+                {
+                    "name": "keyword",
+                    "match": "\\."
+                },
+                {
+                    "name": "variable",
+                    "match": "[^\\d\\W]\\w*(?=:)"
+                },
+                {
+                    "name": "entity.name.function",
+                    "match": "[^\\d\\W]\\w*"
+                },
+                {
+                    "name": "keyword.operator.flow",
+                    "match": "&|!|\\*|\\+|\\?"
+                }
+            ]
+        },
+        "strings": {
+            "name": "string.quoted.double.pparser",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                {
+                    "name": "constant.character.escape.pparser",
+                    "match": "\\\\."
+                }
+            ]
+        }
+    },
+    "scopeName": "source.pparser"
+}

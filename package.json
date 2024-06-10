@@ -1,0 +1,27 @@
+{
+  "name": "pparser",
+  "displayName": "pparser",
+  "description": "Syntax highlighting for pparser",
+  "icon": "logo.png",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "pparser",
+      "aliases": ["pparser", "pparser"],
+      "firstLine": "%name|%type|%hpp|%cpp|%root",
+      "extensions": [".pparser"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "pparser",
+      "scopeName": "source.pparser",
+      "path": "./syntaxes/pparser.tmLanguage.json"
+    }]
+  }
+}
