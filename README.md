@@ -4,5 +4,5 @@ Syntax highlighting for the [pparser](https://github.com/romanfedyniak/pparser) 
 
 ![](example.png)
 
-## Ліцензія
+## License
 [MIT](LICENSE)
